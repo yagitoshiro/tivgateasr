@@ -13,6 +13,6 @@ First subscribe to docomo developer support and get SDK and API key. Put FSRServ
 
 FAQ
 ==========
-Q: Is it for Android only? How can I implement voice recognition function onto my app?
+Q: Is it for Android only? How can I implement voice recognition function onto my iOS app?
 
 A: Ask Siri.
