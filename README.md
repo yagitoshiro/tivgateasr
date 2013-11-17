@@ -9,7 +9,7 @@ See example/app.js
 
 Install
 ==========
-First subscribe to docomo developer support and get SDK and API key. Put libFSR.so into lib/armeabi-v7a/. Currently only ARM processers are supported (by vendor).
+First subscribe to docomo developer support and get SDK and API key. Put FSRServiceOpen.jar in lib directory and drop libFSR.so into lib/armeabi-v7a/. Currently only ARM processers are supported (by vendor).
 
 FAQ
 ==========
