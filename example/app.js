@@ -1,39 +1,76 @@
-// This is a test harness for your module
-// You should do something interesting in this harness 
-// to test out the module and to provide instructions 
-// to users on how to use it by example.
+Titanium.UI.setBackgroundColor('#000');
 
-
-// open a single window
-var win = Ti.UI.createWindow({
-	backgroundColor:'white'
+var audio = require('org.selfkleptomaniac.mod.tivgateasr');
+audio.init({
+  APIKey: "YOUR API KEY",
+  speechTime: 1000,
+  recordSize: 240,
+  recognizeTime: 1000
 });
-var label = Ti.UI.createLabel();
-win.add(label);
-win.open();
 
-// TODO: write your module tests here
-var tivgateasr = require('org.selfkleptomaniac.mod.tivgateasr');
-Ti.API.info("module is => " + tivgateasr);
+var tabGroup = Titanium.UI.createTabGroup();
+var win1 = Titanium.UI.createWindow({
+    layout: 'vertical',
+    title:'Tab 1',
+    backgroundColor:'#fff'
+});
+var tab1 = Titanium.UI.createTab({
+    icon:'KS_nav_views.png',
+    title:'Tab 1',
+    window:win1
+});
 
-label.text = tivgateasr.example();
+var button = Titanium.UI.createButton({
+  top: 200,
+  color:'#999',
+  title:'音声入力',
+  font:{fontSize:20,fontFamily:'Helvetica Neue'},
+  textAlign:'center',
+  width:Ti.UI.SIZE,
+  height: Ti.UI.SIZE
+});
+var label = Ti.UI.createLabel({
+  top: 100,
+  color: '#999',
+  text: 'ここに表示',
+  font:{fontSize:30,fontFamily:'Helvetica Neue'},
+  textAlign:'center',
+  width:Ti.UI.SIZE
+});
+audio.addEventListener('notifyAbort', function(e){
+  Ti.API.info(e.message);
+//  button.text = audio.getResult();
+  if(e.message == "NotifyEndRecognition"){
+    Ti.API.info(audio.getResult());
+  }
+});
+audio.addEventListener('notifyEvent', function(e){
+  Ti.API.info(e.message);
+//  button.text = audio.getResult();
+  if(e.message == "NotifyEndRecognition"){
+    Ti.API.info(audio.getResult());
+    label.text = audio.getResult();
+  }
+});
 
-Ti.API.info("module exampleProp is => " + tivgateasr.exampleProp);
-tivgateasr.exampleProp = "This is a test value";
+win1.add(button);
+win1.add(label);
 
-if (Ti.Platform.name == "android") {
-	var proxy = tivgateasr.createExample({
-		message: "Creating an example Proxy",
-		backgroundColor: "red",
-		width: 100,
-		height: 100,
-		top: 100,
-		left: 150
-	});
+var mode = "start";
+button.addEventListener('click', function(){
+  Ti.API.info("click!");
+  if(mode == "start"){
+    audio.connect();
+    audio.start({
+      autoStart: true
+    });
+    mode = "recording";
+  }else{
+    audio.stop();
+    audio.disconnect();
+    mode = "start";
+  }
+});
 
-	proxy.printMessage("Hello world!");
-	proxy.message = "Hi world!.  It's me again.";
-	proxy.printMessage("Hello world!");
-	win.add(proxy);
-}
-
+tabGroup.addTab(tab1);
+tabGroup.open();
